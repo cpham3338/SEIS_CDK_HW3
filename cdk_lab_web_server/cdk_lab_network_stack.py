@@ -22,7 +22,13 @@ class CdkLabNetworkStack(Stack):
         super().__init__(scope, construct_id, **kwargs)
 
         # Create a VPC. CDK by default creates and attaches internet gateway for VPC
-        self.cdk_lab_vpc = ec2.Vpc(self, "cdk_lab_vpc", 
-                            ip_addresses=ec2.IpAddresses.cidr("10.0.0.0/16"),
-                            subnet_configuration=[ec2.SubnetConfiguration(name="PublicSubnet01",subnet_type=ec2.SubnetType.PUBLIC)]
-        )
+        self.cdk_lab_vpc = ec2.Vpc( self, 
+                                    "cdk_lab_vpc", 
+                                    max_azs = 2,
+                                    ip_addresses=ec2.IpAddresses.cidr("10.0.0.0/16"),
+                                    subnet_configuration=[ ec2.SubnetConfiguration(name="PublicSubnet01", subnet_type=ec2.SubnetType.PUBLIC),
+                                                           ec2.SubnetConfiguration(name="PrivateSubnet01", subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS),     
+                                                         ]
+                                  )                                       
+                                                
+        
